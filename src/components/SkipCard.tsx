@@ -118,7 +118,7 @@ const SkipCard: React.FC<SkipCardProps> = ({ skip, onSelect, isSelected = false 
 
         {/* Action Button */}
         <button
-          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 mt-auto ${
+          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 mt-auto cursor-pointer ${
             isSelected
               ? 'bg-indigo-600 text-white shadow-lg hover:bg-indigo-700'
               : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200 hover:border-gray-300'
