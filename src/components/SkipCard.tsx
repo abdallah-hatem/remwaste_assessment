@@ -28,95 +28,113 @@ const SkipCard: React.FC<SkipCardProps> = ({ skip, onSelect, isSelected = false 
   const finalPrice = Math.round(skip.price_before_vat * (1 + skip.vat / 100));
 
   return (
-    <div className={`rounded-2xl overflow-hidden transition-all duration-200 group ${
-      isSelected 
-        ? 'bg-blue-900 border-2 border-blue-500 shadow-xl shadow-blue-500/20 scale-105' 
-        : 'bg-gray-800 border-2 border-transparent hover:bg-gray-750'
-    }`}>
-      {/* Skip Image Container */}
-      <div className="relative bg-gradient-to-br from-gray-300 to-gray-400 h-48 flex items-center justify-center">
-        {/* Size Badge */}
-        <Badge variant="primary" className="absolute top-4 right-4">
+    <div 
+      className={`group relative bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl border-2 cursor-pointer flex flex-col h-full ${
+        isSelected 
+          ? 'border-indigo-500 shadow-2xl shadow-indigo-500/20 scale-[1.02]' 
+          : 'border-gray-100 hover:border-indigo-200 shadow-lg'
+      }`}
+      onClick={() => onSelect(skip)}
+    >
+      {/* Status indicators */}
+      <div className="absolute top-4 left-4 z-10 flex gap-2">
+        <Badge variant="primary" className="text-xs px-2 py-1">
           {skip.size} Yards
         </Badge>
-        
-        {/* Skip Image */}
-        <img 
-          src="https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/10-yarder-skip.jpg"
-          alt={`${skip.size} Yard Skip`}
-          className="w-full h-full object-cover"
-        />
-
-        {/* Warning Badge for not allowed on road */}
         {!skip.allowed_on_road && (
-          <Badge variant="warning" className="absolute bottom-4 left-4 flex items-center gap-1">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-            Not Allowed On The Road
+          <Badge variant="warning" className="text-xs px-2 py-1">
+            Permit Required
           </Badge>
         )}
       </div>
 
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-semibold text-white mb-2">
-          {skip.size} Yard Skip
-        </h3>
-        
-        <p className="text-gray-400 mb-4">
-          {skip.hire_period_days} day hire period
-        </p>
+      {/* Selection indicator */}
+      {isSelected && (
+        <div className="absolute top-4 right-4 z-10 bg-indigo-500 text-white rounded-full p-1">
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
+        </div>
+      )}
 
-        <div className="flex items-center justify-between mb-6">
-          <div className="text-3xl font-bold text-blue-500">
-            £{finalPrice}
+      {/* Image Section */}
+      <div className="relative h-48 bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center overflow-hidden">
+        <img 
+          src="https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/10-yarder-skip.jpg"
+          alt={`${skip.size} Yard Skip`}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+      </div>
+
+      {/* Content Section */}
+      <div className="p-6 flex flex-col flex-grow">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-4">
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-1">
+              {skip.size} Yard Skip
+            </h3>
+            <p className="text-sm text-gray-500">
+              {skip.hire_period_days} days hire period
+            </p>
           </div>
-          {skip.vat > 0 && (
-            <div className="text-sm text-gray-400">
-              +{skip.vat}% VAT
+          <div className="text-right">
+            <div className="text-2xl font-bold text-indigo-600">
+              £{finalPrice}
             </div>
+            <div className="text-xs text-gray-400">inc. VAT</div>
+          </div>
+        </div>
+
+        {/* Features */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {skip.allowed_on_road && (
+            <span className="inline-flex items-center gap-1 text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full">
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              Road Legal
+            </span>
+          )}
+          {skip.allows_heavy_waste && (
+            <span className="inline-flex items-center gap-1 text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full">
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+              </svg>
+              Heavy Waste OK
+            </span>
+          )}
+          {skip.transport_cost && (
+            <span className="inline-flex items-center gap-1 text-xs bg-amber-50 text-amber-700 px-2 py-1 rounded-full">
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
+                <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1V8a1 1 0 00-1-1h-3z"/>
+              </svg>
+              +Transport
+            </span>
           )}
         </div>
 
+        {/* Action Button */}
         <button
-          onClick={() => onSelect(skip)}
-          className={`w-full py-3 px-4 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer ${
+          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 mt-auto ${
             isSelected
-              ? 'bg-blue-600 hover:bg-blue-700 text-white'
-              : 'bg-gray-700 hover:bg-gray-600 text-white group-hover:bg-gray-600'
+              ? 'bg-indigo-600 text-white shadow-lg hover:bg-indigo-700'
+              : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200 hover:border-gray-300'
           }`}
         >
           {isSelected ? (
-            <>
+            <span className="flex items-center justify-center gap-2">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
               Selected
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </>
+            </span>
           ) : (
-            <>
-              Select This Skip
-              <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </>
+            'Select This Skip'
           )}
         </button>
-
-        {/* Additional Info */}
-        {(skip.transport_cost || skip.allows_heavy_waste) && (
-          <div className="mt-4 pt-4 border-t border-gray-700">
-            <div className="flex flex-wrap gap-2 text-xs">
-              {skip.allows_heavy_waste && (
-                <Badge variant="success">Heavy Waste Allowed</Badge>
-              )}
-              {skip.transport_cost && (
-                <Badge variant="info">Transport: £{skip.transport_cost}</Badge>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

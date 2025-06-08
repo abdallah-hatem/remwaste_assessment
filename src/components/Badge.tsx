@@ -11,14 +11,14 @@ const Badge: React.FC<BadgeProps> = ({
   variant = 'primary', 
   className = '' 
 }) => {
-  const baseClasses = 'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium';
+  const baseClasses = 'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold';
   
   const variantClasses = {
-    primary: 'bg-blue-600 text-white',
-    warning: 'bg-yellow-600 text-white',
-    success: 'bg-green-600 text-white',
-    info: 'bg-cyan-600 text-white',
-    secondary: 'bg-gray-600 text-white'
+    primary: 'bg-indigo-100 text-indigo-800 border border-indigo-200',
+    warning: 'bg-amber-100 text-amber-800 border border-amber-200',
+    success: 'bg-green-100 text-green-800 border border-green-200',
+    info: 'bg-blue-100 text-blue-800 border border-blue-200',
+    secondary: 'bg-gray-100 text-gray-800 border border-gray-200'
   };
 
   return (
